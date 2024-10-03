@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Cards</title>
+    <style>
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px;
+            width: 200px;
+            text-align: center;
+        }
+        .card img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="card-container"></div>
+
+    <script>
+        const cardContainer = document.getElementById('card-container');
+
+        // Fetching products data from the API
+        fetch('http://localhost:5000/api/product/abc')
+            .then(response => response.json())
+            .then(product => {
+
+                    console.log(product);
+                    
+                    if(product.error){
+                        const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.innerHTML = `
+                        
+                        <h2>${product.error}</h2>
+                        
+                    `;
+                    cardContainer.appendChild(card);
+
+                    }
+                    else{
+                        
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h2>${product.name}</h2>
+                        <p>${product.desc}</p>
+                        <p>$${product.price}</p>
+                    `;
+                    cardContainer.appendChild(card);
+                    }
+               
+              
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
